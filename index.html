@@ -1,0 +1,240 @@
+<meta http-equiv="Access-Control-Allow-Origin" content="*"> 
+<head>
+<link rel='stylesheet' type='text/css' href='mystyle.css'>
+</head>
+
+<html>
+<body onLoad='start()'>
+<script src=damage_cal.js></script>
+<iframe src='monsters.txt' style='display:none' id='monsterDB'></iframe>
+<h1><span id='isReady' style='display:inherit'>Loading monster DB... Please wait</span></h1>
+<h1> TEST </h1>
+
+<!-- table for monster input -->
+<form id='monsters'>
+
+<table width='' border='0' cellpadding='1'>
+  <tr>
+    <td width='113' class='left-header'>Monsters #</td>
+    <td class='stats'><input type='text' id='mon1' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp1' onChange='is297(this.id)'></td>
+    <td class='stats'><input type='text' id='mon2' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp2'></td>
+    <td class='stats'><input type='text' id='mon3' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp3'></td>
+    <td class='stats'><input type='text' id='mon4' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp4'></td>
+    <td class='stats'><input type='text' id='mon5' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp5'></td>
+    <td class='stats'><input type='text' id='mon6' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp6'></td>
+  </tr>
+  <tr>
+    <td class='left-header'>ATK</td>
+    <td><input id='atk1' class='cell-ATK' type='number' value='1215'></td>
+    <td><input id='atk2' class='cell-ATK' type='number' value='0'></td>
+    <td><input id='atk3' class='cell-ATK' type='number' value='0'></td>
+    <td><input id='atk4' class='cell-ATK' type='number' value='0'></td>
+    <td><input id='atk5' class='cell-ATK' type='number' value='0'></td>
+    <td><input id='atk6' class='cell-ATK' type='number' value='0'></td>
+  </tr>
+  <tr>
+    <td class='left-header'>Row enhance</td>
+    <td class='table-row'>
+      <select  id='row1'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+      </select>
+    </td>
+    <td class='table-row'>
+      <select id='row2'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+      </select>
+    </td>
+    <td class='table-row'>
+      <select id='row3'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+      </select>
+	</td>
+    <td class='table-row'>
+      <select id='row4'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+      </select>
+    </td>
+    <td class='table-row'>
+      <select id='row5'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+      </select>
+    </td>
+    <td class='table-row'>
+      <select id='row6'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+        <option value='3'>3</option>
+      </select>
+    </td>
+  </tr>  
+  <tr>
+    <td class='left-header'>Two-pronged</td>
+    <td class='tp-row'>
+      <select id='tp1'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
+    </td>
+    <td class='tp-row'>
+      <select id='tp2'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
+    </td>
+    <td class='tp-row'>
+      <select id='tp3'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
+    </td>
+    <td class='tp-row'>
+      <select id='tp4'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
+    </td>
+    <td class='tp-row'>
+      <select id='tp5'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
+    </td>
+    <td class='tp-row'>
+      <select id='tp6'>
+        <option value='0'>0</option>
+        <option value='1'>1</option>
+        <option value='2'>2</option>
+      </select>
+    </td>
+      </tr>
+</table>
+</form>
+
+<!-- Other multiplier -->
+<p>
+<table width='200' border='0'>
+  <tr>
+    <td align='right'>Leader 1 Multiplier</td>
+    <td><select id='m_l1' onChange='change_m2(this.selectedIndex)'></select></td>
+  </tr>
+  <tr>
+    <td align='right'>Leader 2 Multiplier</td>
+    <td><select id='m_l2'></select></td>
+  </tr>
+  <tr>
+    <td align='right'>Other Multiplier</td>
+    <td><select id='m_other'></select></td>
+  </tr>
+  <tr>
+    <td align='right'>+orbs?</td>
+    <td><select id='isplus'>
+        <option value='0'>No</option>
+        <option value='1'>Yes</option>
+    </select></td>
+  </tr>
+</table>
+</p>
+
+<!-- Orb matched -->
+<p>	
+<table width='' border="0">
+  <tr>
+    <td align='right'>Matched:</td>
+    <td width='500'><span id='orbinput'></span></td>
+  </tr>
+  <tr>
+    <td align='right'>Other combo:</td>
+    <td><input type='number' min='0' class='orb-input' id='other_combo'></td>
+  </tr>
+</table></p>
+
+<!-- Compare -->
+<p>
+Compare? <input type='checkbox' id='isCompare' onChange='showCompare(this.checked)'>
+<div style='display:none' id='table_c'>
+Compare with...
+<table width='' border="0">
+  <tr>
+    <td align='right'>Match:</td>
+    <td width='500'><span id='orbinput_c'></span></td>
+  </tr>
+  <tr>
+    <td align='right'>Other combo:</td>
+    <td><input type='number' min='0' class='orb-input' id='other_combo_c'></td>
+  </tr>
+</table>
+</div>
+</p>
+  
+<!-- button to initiate calaultions -->
+<p><button id='cal' onClick='precd()'>Calculate</button></br></p>
+
+<!-- table to display results -->
+<div style='display:none' id='result'>
+<p id='disp' style='font-size:9px'></p>
+<table width='777' border='0' cellpadding='1'>
+  <tr class='table-result'>
+    <td width='136' class='left-header'>Damage</td>
+    <td width='102'><p id='damage1'></p></td>
+    <td width='102'><p id='damage2'></p></td>
+    <td width='102'><p id='damage3'></p></td>
+    <td width='102'><p id='damage4'></p></td>
+    <td width='102'><p id='damage5'></p></td>
+    <td width='108'><p id='damage6'></p></td>
+  </tr>
+</table></br>
+<table>
+  <tr class='table-result' style='font-size:20px'>
+    <td width="136">Total Damage</td>
+    <td width="200" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage'></p></td>
+  </tr>
+</table>
+<hr>
+</div>
+
+<div style='display:none' id='result_compare'>
+<p>Compared:</p>
+<p id='disp-compare' style='font-size:9px'></p>
+<table width='777' border='0' cellpadding='1'>
+  <tr class='table-result'>
+    <td width='136' class='left-header'>Damage</td>
+    <td width='102'><p id='damage1-compare'></p></td>
+    <td width='102'><p id='damage2-compare'></p></td>
+    <td width='102'><p id='damage3-compare'></p></td>
+    <td width='102'><p id='damage4-compare'></p></td>
+    <td width='102'><p id='damage5-compare'></p></td>
+    <td width='108'><p id='damage6-compare'></p></td>
+  </tr>
+</table></br>
+<table>
+  <tr class='table-result' style='font-size:20px'>
+    <td width="136">Total Damage</td>
+    <td width="200" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage-compare'></p></td>
+  </tr>
+</table>
+</div>
+
+<p id='test1'></p>
+<p id='test2'></p>
+

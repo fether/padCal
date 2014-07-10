@@ -1,0 +1,59 @@
+body {
+	background-color:#CCD;
+	color:black;
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:16px;
+}
+
+table {
+	font-size:16px;
+}
+
+.left-header {
+	width:130px;
+	text-align:right;
+}
+
+.stats {
+	align:left;
+	//padding-left:10px;
+	width:100px;
+	background-color:transparent;
+}
+
+.cell-mId {
+	border:1px thin;
+	text-align:center;
+	width:80px;
+	//background-color:transparent;
+}
+
+.cell-ATK {
+	border:1px thin;
+	text-align:center;
+	width:100px;
+	//background-color:transparent;
+}
+
+
+.table-row {
+	text-align:center;
+}
+
+.tp-row {
+	text-align:center;
+}
+
+.table-result {
+	text-align:center;
+}
+
+.table-result-compare {
+	font-size:10px;
+	text-align:right;
+}
+
+.orb-input {
+	width:50px;
+	margin-right:1px;
+}
