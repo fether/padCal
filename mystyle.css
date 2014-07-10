@@ -9,13 +9,17 @@ table {
 	font-size:16px;
 }
 
+.monster-name {
+	text-align:center;
+	font-size:10px;
+}
 .left-header {
 	width:130px;
 	text-align:right;
 }
 
 .stats {
-	align:left;
+	align:center;
 	//padding-left:10px;
 	width:100px;
 	background-color:transparent;

@@ -207,6 +207,11 @@ function changeStat(id,val) {
 		var loc = getMonsterArrayLocation(Number(val));
 		monsterDB[loc]['awoken_skills'].sort();
 		
+		//name
+		var icon_size = 50;
+		document.getElementById('name'+pos).innerHTML = '<a href="http://puzzledragonx.com/en/monster.asp?n='+val+'" target="_blank"><img src="http://puzzledragonx.com/en/img/book/'+val+'.png" height="'+icon_size+'" width="'+icon_size+'"></a>';
+		document.getElementById('name'+pos).style.display = 'block';
+		
 		//atk up: 2
 		document.getElementById('ismp'+pos).checked = false;
 		document.getElementById('atk'+pos).value = monsterDB[loc]['atk_max'] + countAwoken(loc,2)*100;
@@ -214,7 +219,7 @@ function changeStat(id,val) {
 		//row enhance: 22-26
 		//problem: only getting the highest amount of row enhance #
 		var r = 0;
-		for (var i = 22; i < 26; i++) {
+		for (var i = 22; i <= 26; i++) {
 			(countAwoken(loc,i)>r)?r=countAwoken(loc,i):r+=0;
 		}
 		document.getElementById('row'+pos).selectedIndex = r;

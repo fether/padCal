@@ -8,24 +8,24 @@
 <script src=damage_cal.js></script>
 <iframe src='monsters.txt' style='display:none' id='monsterDB'></iframe>
 <h1><span id='isReady' style='display:inherit'>Loading monster DB... Please wait</span></h1>
-<h1> TEST </h1>
+<h1>PAD Damage Calculator (alpha)</h1>
 
 <!-- table for monster input -->
 <form id='monsters'>
 
 <table width='' border='0' cellpadding='1'>
   <tr>
-    <td width='113' class='left-header'>Monsters #</td>
-    <td class='stats'><input type='text' id='mon1' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp1' onChange='is297(this.id)'></td>
-    <td class='stats'><input type='text' id='mon2' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp2'></td>
-    <td class='stats'><input type='text' id='mon3' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp3'></td>
-    <td class='stats'><input type='text' id='mon4' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp4'></td>
-    <td class='stats'><input type='text' id='mon5' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp5'></td>
-    <td class='stats'><input type='text' id='mon6' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp6'></td>
+    <td width='113' height="26" class='left-header'>Monsters #</td>
+    <td class='stats'><input type='text' id='mon1' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp1' onChange='is297(this.id)'><span class='monster-name' id='name1' style='display:none'></span></td>
+    <td class='stats'><input type='text' id='mon2' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp2' onChange='is297(this.id)'><span class='monster-name' id='name2' style='display:none'></span></td>
+    <td class='stats'><input type='text' id='mon3' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp3' onChange='is297(this.id)'><span class='monster-name' id='name3' style='display:none'></span></td>
+    <td class='stats'><input type='text' id='mon4' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp4' onChange='is297(this.id)'><span class='monster-name' id='name4' style='display:none'></span></td>
+    <td class='stats'><input type='text' id='mon5' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp5' onChange='is297(this.id)'><span class='monster-name' id='name5' style='display:none'></span></td>
+    <td class='stats'><input type='text' id='mon6' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp6' onChange='is297(this.id)'><span class='monster-name' id='name6' style='display:none'></span></td>
   </tr>
   <tr>
     <td class='left-header'>ATK</td>
-    <td><input id='atk1' class='cell-ATK' type='number' value='1215'></td>
+    <td><input id='atk1' class='cell-ATK' type='number' value='0'></td>
     <td><input id='atk2' class='cell-ATK' type='number' value='0'></td>
     <td><input id='atk3' class='cell-ATK' type='number' value='0'></td>
     <td><input id='atk4' class='cell-ATK' type='number' value='0'></td>
@@ -130,9 +130,6 @@
       </tr>
 </table>
 </form>
-
-<!-- Other multiplier -->
-<p>
 <table width='200' border='0'>
   <tr>
     <td align='right'>Leader 1 Multiplier</td>
@@ -157,7 +154,6 @@
 </p>
 
 <!-- Orb matched -->
-<p>	
 <table width='' border="0">
   <tr>
     <td align='right'>Matched:</td>
@@ -167,7 +163,7 @@
     <td align='right'>Other combo:</td>
     <td><input type='number' min='0' class='orb-input' id='other_combo'></td>
   </tr>
-</table></p>
+</table>
 
 <!-- Compare -->
 <p>
