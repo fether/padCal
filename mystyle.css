@@ -35,10 +35,16 @@ table {
 .cell-ATK {
 	border:1px thin;
 	text-align:center;
-	width:100px;
+	width:60px;
 	//background-color:transparent;
 }
 
+.cell-ATKsub {
+	border:1px thin;
+	text-align:center;
+	width:40px;
+	//background-color:transparent;
+}
 
 .table-row {
 	text-align:center;
@@ -57,7 +63,30 @@ table {
 	text-align:right;
 }
 
+.result-sub {
+	text-align:right;
+	vertical-align:bottom;
+	font-size:14px;
+}
+
 .orb-input {
 	width:50px;
 	margin-right:1px;
+}
+
+.orb-matched {
+	line-height:22px;
+	vertical-align:text-bottom;
+}
+
+.orb-ns {
+	height:18px;
+	width:18px;
+	padding:2px;
+}
+
+.orb-s {
+	height:18px;
+	width:18px;
+	border:2px solid #6E6E6E;
 }

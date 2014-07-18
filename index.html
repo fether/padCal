@@ -1,4 +1,28 @@
 <meta http-equiv="Access-Control-Allow-Origin" content="*"> 
+<style type="text/css">
+#apDiv1 {
+	position:relative;
+	width:187px;
+	height:57px;
+	z-index:1;
+	left: 210px;
+	bottom: 132px;
+}
+#apDiv2 {
+	position:relative;
+	width:187px;
+	height:57px;
+	z-index:2;
+	left: 420px;
+	bottom: 191px;
+}
+#apDiv3 {
+	position:absolute;
+	width:200px;
+	height:115px;
+	z-index:3;
+}
+</style>
 <head>
 <link rel='stylesheet' type='text/css' href='mystyle.css'>
 </head>
@@ -11,8 +35,6 @@
 <h1>PAD Damage Calculator (alpha)</h1>
 
 <!-- table for monster input -->
-<form id='monsters'>
-
 <table width='' border='0' cellpadding='1'>
   <tr>
     <td width='113' height="26" class='left-header'>Monsters #</td>
@@ -25,17 +47,17 @@
   </tr>
   <tr>
     <td class='left-header'>ATK</td>
-    <td><input id='atk1' class='cell-ATK' type='number' value='0'></td>
-    <td><input id='atk2' class='cell-ATK' type='number' value='0'></td>
-    <td><input id='atk3' class='cell-ATK' type='number' value='0'></td>
-    <td><input id='atk4' class='cell-ATK' type='number' value='0'></td>
-    <td><input id='atk5' class='cell-ATK' type='number' value='0'></td>
-    <td><input id='atk6' class='cell-ATK' type='number' value='0'></td>
+    <td><input id='atk1' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(1)'><input id='atk1s' class='cell-ATKsub' type='text' value='0' disabled></td>
+    <td><input id='atk2' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(2)'><input id='atk2s' class='cell-ATKsub' type='text' value='0' disabled></td>
+    <td><input id='atk3' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(3)'><input id='atk3s' class='cell-ATKsub' type='text' value='0' disabled></td>
+    <td><input id='atk4' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(4)'><input id='atk4s' class='cell-ATKsub' type='text' value='0' disabled></td>
+    <td><input id='atk5' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(5)'><input id='atk5s' class='cell-ATKsub' type='text' value='0' disabled></td>
+    <td><input id='atk6' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(6)'><input id='atk6s' class='cell-ATKsub' type='text' value='0' disabled></td>
   </tr>
   <tr>
-    <td class='left-header'>Row enhance</td>
+    <td class='left-header'>ignore this -&gt;</td>
     <td class='table-row'>
-      <select  id='row1'>
+      <select id='row1'>
         <option value='0'>0</option>
         <option value='1'>1</option>
         <option value='2'>2</option>
@@ -127,9 +149,73 @@
         <option value='2'>2</option>
       </select>
     </td>
-      </tr>
+  </tr>
 </table>
-</form>
+<div style='font-size:9px'>&nbsp;</div>
+<div id="result" style='display:table'>
+  <table width='777' border='0' cellpadding='1'>
+    <tr class='table-result'>
+    <td width='136' class='left-header'>Damage</td>
+    <td width='102'><p id='damage1'></p></td>
+    <td width='102'><p id='damage2'></p></td>
+    <td width='102'><p id='damage3'></p></td>
+    <td width='102'><p id='damage4'></p></td>
+    <td width='102'><p id='damage5'></p></td>
+    <td width='108'><p id='damage6'></p></td>
+  </tr>
+  <tr class='result-sub'>
+    <td>sub</td>
+    <td><p id='damage1sub'></p></td>
+    <td><p id='damage2sub'></p></td>
+    <td><p id='damage3sub'></p></td>
+    <td><p id='damage4sub'></p></td>
+    <td><p id='damage5sub'></p></td>
+    <td><p id='damage6sub'></p></td>
+  </tr>
+</table>
+<table width="777">
+  <tr class='table-result' style='font-size:20px'>
+    <td width="150" valign='top'>Total Damage</td>
+    <td width="142" valign='top' align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage'></p>
+    <td width="469" valign='top' align='left'><p style='font-size:12px;color:black' id='splitdamage'></p></td>
+  </tr>
+</table>
+</div>
+<div id="result" style='display:table'>
+  <table width="800" border="0" cellpadding="1">
+    <tr>
+      <td align='center'>VS</td>
+    </tr>
+  </table>
+<table width='777' border='0' cellpadding='1'>
+    <tr class='table-result'>
+    <td width='136' class='left-header'>Damage</td>
+    <td width='102'><p id='damage1c'></p></td>
+    <td width='102'><p id='damage2c'></p></td>
+    <td width='102'><p id='damage3c'></p></td>
+    <td width='102'><p id='damage4c'></p></td>
+    <td width='102'><p id='damage5c'></p></td>
+    <td width='108'><p id='damage6c'></p></td>
+  </tr>
+  <tr class='result-sub'>
+    <td>sub</td>
+    <td><p id='damage1subc'></p></td>
+    <td><p id='damage2subc'></p></td>
+    <td><p id='damage3subc'></p></td>
+    <td><p id='damage4subc'></p></td>
+    <td><p id='damage5subc'></p></td>
+    <td><p id='damage6subc'></p></td>
+  </tr>
+</table>
+<table width="777">
+  <tr class='table-result' style='font-size:20px'>
+    <td width="150" valign='top'>Total Damage</td>
+    <td width="142" valign='top' align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamagec'></p>
+    <td width="469" valign='top' align='left'><p style='font-size:12px;color:black' id='splitdamagec'></p></td>
+  </tr>
+</table>
+<hr>
+</div>
 <table width='200' border='0'>
   <tr>
     <td align='right'>Leader 1 Multiplier</td>
@@ -151,86 +237,29 @@
     </select></td>
   </tr>
 </table>
-</p>
-
 <!-- Orb matched -->
-<table width='' border="0">
-  <tr>
-    <td align='right'>Matched:</td>
-    <td width='500'><span id='orbinput'></span></td>
-  </tr>
-  <tr>
-    <td align='right'>Other combo:</td>
-    <td><input type='number' min='0' class='orb-input' id='other_combo'></td>
-  </tr>
-</table>
 
-<!-- Compare -->
-<p>
-Compare? <input type='checkbox' id='isCompare' onChange='showCompare(this.checked)'>
-<div style='display:none' id='table_c'>
-Compare with...
-<table width='' border="0">
-  <tr>
-    <td align='right'>Match:</td>
-    <td width='500'><span id='orbinput_c'></span></td>
-  </tr>
-  <tr>
-    <td align='right'>Other combo:</td>
-    <td><input type='number' min='0' class='orb-input' id='other_combo_c'></td>
-  </tr>
-</table>
-</div>
-</p>
-  
-<!-- button to initiate calaultions -->
-<p><button id='cal' onClick='precd()'>Calculate</button></br></p>
+<button onClick="generateOrbInput('orbinput',2)">More</button> 
+<button onClick="clearOrbInput()">Clear</button> <button id='cal' onClick='calculateDamage()'>Calculate</button>
 
-<!-- table to display results -->
-<div style='display:none' id='result'>
-<p id='disp' style='font-size:9px'></p>
-<table width='777' border='0' cellpadding='1'>
-  <tr class='table-result'>
-    <td width='136' class='left-header'>Damage</td>
-    <td width='102'><p id='damage1'></p></td>
-    <td width='102'><p id='damage2'></p></td>
-    <td width='102'><p id='damage3'></p></td>
-    <td width='102'><p id='damage4'></p></td>
-    <td width='102'><p id='damage5'></p></td>
-    <td width='108'><p id='damage6'></p></td>
-  </tr>
-</table></br>
-<table>
-  <tr class='table-result' style='font-size:20px'>
-    <td width="136">Total Damage</td>
-    <td width="200" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage'></p></td>
-  </tr>
-</table>
-<hr>
+<div id="apDiv1">
+  <table width='' border="0">
+    <tr>
+      <td width='180'><p id='orbinput' class='orb-matched'></p></td>
+    </tr>
+    <tr>
+      <td style='fontsize:14px'>Set all to: <span id='setall'></span></td>
+    </tr>
+  </table>
 </div>
+<div id="apDiv2"><table width='' border="0">
+  <tr>
+    <td width='180'><p id='orbinput_c' class='orb-matched'></p></td>
+  </tr>
+  <tr>
+    <td style='fontsize:14px'>Set all to:<span id='setall_c'></span></td>
+  </tr>  
+</table></div>
 
-<div style='display:none' id='result_compare'>
-<p>Compared:</p>
-<p id='disp-compare' style='font-size:9px'></p>
-<table width='777' border='0' cellpadding='1'>
-  <tr class='table-result'>
-    <td width='136' class='left-header'>Damage</td>
-    <td width='102'><p id='damage1-compare'></p></td>
-    <td width='102'><p id='damage2-compare'></p></td>
-    <td width='102'><p id='damage3-compare'></p></td>
-    <td width='102'><p id='damage4-compare'></p></td>
-    <td width='102'><p id='damage5-compare'></p></td>
-    <td width='108'><p id='damage6-compare'></p></td>
-  </tr>
-</table></br>
-<table>
-  <tr class='table-result' style='font-size:20px'>
-    <td width="136">Total Damage</td>
-    <td width="200" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage-compare'></p></td>
-  </tr>
-</table>
-</div>
 
 <p id='test1'></p>
-<p id='test2'></p>
-

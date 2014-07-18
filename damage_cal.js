@@ -4,121 +4,321 @@ function start() {
 	generateMultiplier('m_l1',lm);
 	generateMultiplier('m_l2',lm);
 	generateMultiplier('m_other',om);
-	generateOrbInput('orbinput');
-	generateOrbInput('orbinput_c');
+	generateOrbInput();
+	generateSetAll('setall');
+	generateSetAll('setall_c');
 	monsterDB = JSON.parse(readMonsterDatabase());
 	document.getElementById('isReady').style.display = 'none';
 	//console.log(monsterDB);
 	//insert other functions here
+	changeStat('mon1',1422);
+	changeStat('mon2',1217);
+	changeStat('mon3',892);
+	changeStat('mon4',1238);
+	changeStat('mon5',1299);
+	changeStat('mon6',1422);
+
 }
 //-------------------------
 
-function getInput() {
-	var array = [];
-	array[0] = 0;
-	for (var i = 1; i <= 6 ; i++) {
-		array[i] = atk(i);
+//global variables---------
+var lm = [1, 1.25, 1.35, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7]; //leader multiplier
+var om = [1, 1.5, 2, 2.5, 3]; //other multiplier
+var monster_loc = ['unused',0,0,0,0,0,0]; //monster loc
+var monster_s = {
+	1:{atk:0,rh:[],tp:0,e1:0,e2:0},
+	2:{atk:0,rh:[],tp:0,e1:0,e2:0},
+	3:{atk:0,rh:[],tp:0,e1:0,e2:0},
+	4:{atk:0,rh:[],tp:0,e1:0,e2:0},
+	5:{atk:0,rh:[],tp:0,e1:0,e2:0},
+	6:{atk:0,rh:[],tp:0,e1:0,e2:0},
+};
+var orb_input_total = 4;
+var orb_s = {};
+var orb_sc = {};
+
+var combo = comboMul = 0;
+var comboc = combocMul = 0;
+var rh_count = rh_countc = [0,0,0,0,0];
+var orb_base_dmg = orb_base_dmgc = ['unused',0,0,0,0,0,0]; // main atr & compare
+var orb_base_dmg_sub = orb_base_dmg_subc = ['unused',0,0,0,0,0,0]; // sub atr & comapre
+
+var damage = damagec = ['unused',0,0,0,0,0,0];
+var damage_sub = damage_subc = ['unused',0,0,0,0,0,0];
+
+var total_damage = total_damagec = 0;
+var total_damage_sub = total_damage_subc = 0;
+//-------------------------
+
+function generateMultiplier(id,array) {
+	var x = document.getElementById(id);
+	for (var i = 0; i < array.length; i++) {
+		var y = document.createElement('option');
+		y.value = y.text = array[i];
+		x.add(y);
 	}
-	return array;
 }
 
-function precd() {
-	var orbx = [0,0,0,0,0,0];
-	
-	if (document.getElementById('isCompare').checked) {
-		for (var i = 0; i < 5 ; i++) {
-			orbx[i] = orbc(i+1);
+function generateOrbInput() {
+	if ( arguments[0] === undefined ) { var a =1; b = orb_input_total; }
+	else { var a = orb_input_total+1; b = orb_input_total+arguments[1]; orb_input_total += arguments[1];}	
+	for (var k = 0; k <= 1; k++ ) {
+		var id = (k==0)?'orbinput':'orbinput_c';
+		var x = document.getElementById(id);
+		for (var i = a; i <= b; i++ ) {
+			var y = document.createElement('input');
+			y.type = 'number';
+			y.value = y.value;
+			y.id = (id=='orbinput')?'orb'+i:'orb'+i+'c';
+			y.min = 3;
+			y.max = 30;
+			y.className = 'orb-input';
+			x.appendChild(y);
+			for (j=0; j<5; j++) {
+				var y = document.createElement('input');
+				y.type = 'image';
+				y.src = 'images\\'+j+'.png';
+				y.id = (id=='orbinput')?'orb'+i+'e'+j:'orb'+i+'e'+j+'c';
+				y.value = 0;
+				y.className = 'orb-ns';
+				x.appendChild(y);
+				y.setAttribute('onClick', 'selectElem(this.id)');
+			}
 		}
-		orbx[5] = Number(document.getElementById('other_combo_c').value);
-		calculateDamage(orbx,1);
 	}
-	
-	for (var i = 0; i < 5 ; i++) { //get orb config into orb[]
-		orbx[i] = orb(i+1);
-	}
-	orbx[5] = Number(document.getElementById('other_combo').value);
-	calculateDamage(orbx);
 }
+
+function generateSetAll(id) {
+	var x = document.getElementById(id);
+	var z = id.charAt(7); //return '' if not compare
+	for (var i = 0; i <= 4; i++) {
+		var y = document.createElement('input');
+		y.type = 'image';
+		y.src = 'images\\'+i+'.png';
+		y.height = '20';
+		y.width = '20';
+		x.appendChild(y);
+		var a = (z=='c')?1:0;
+		y.setAttribute('onClick','setAll('+i+','+a+')');
+	}
+}
+
+function setAll(val,parm) {
+	var z = (parm==1)?'c':'';
+	for (var i = 1; i <= orb_input_total; i++) {
+		for (var j = 0; j <= 4; j++) {
+			document.getElementById('orb'+i+'e'+j+z).value = (j==val)?1:0;
+			document.getElementById('orb'+i+'e'+j+z).className = (j==val)?'orb-s':'orb-ns';
+		}
+	}
+}
+
+
+function calculateDamage() { 
 	
-function calculateDamage(orbx) { //modify to get orb config
+	combo = 0;
+	comboMul = 0;
+	comboc = 0;
+	combocMul = 0;
+
+	rh_count = [0,0,0,0,0]; //row enhance matched count
+	rh_countc = [0,0,0,0,0];
+	re = [0,0,0,0,0]; //row enhance awoken count
 	
-	var rowCount = combo = comboMul = 0;
+	getMonsterStats(); //monster_s = sub1:{atk:0,rh:[],tp:0,e1:0,e2:0}
+	getOrbInput(0); //orb_s = {element:[orb1,orb2...],element2:[orb1,orb2...]}
+	getOrbInput(1); //orb_sc
+	getCombo();
+	getRowEnhance();
 	
 	//calculate damage
-	var orb_base_damage = [0,0,0,0,0,0];
-	for (var j = 0; j < 6; j++) { //loop subs
-		for (var i = 1; i <= 5; i++) { //loop orbs matched
-			var x = orbx[i-1];
-			var y = 1;
-			if ( j == 0 ) {
-				if ( x >= 3 ) { combo++; } //add combo count if orb > 3
-				if ( x >= 6 ) { rowCount++; } //add row count if orb > 6
+	damage = ['unused',0,0,0,0,0,0];
+	damage_sub = ['unused',0,0,0,0,0,0];
+	orb_base_dmg = ['unused',0,0,0,0,0,0];
+	orb_base_dmgc = ['unused',0,0,0,0,0,0];
+	orb_base_dmg_sub = ['unused',0,0,0,0,0,0];	
+	orb_base_dmg_subc = ['unused',0,0,0,0,0,0];
+	
+	//orb input 1
+	for (var i = 1; i <= 6; i ++) { // i = sub
+		var e = monster_s[i]['e1'];
+		var e_sub = monster_s[i]['e2'];
+		for (var j = 0; j <= 4; j++ ) { // j = element
+			if ( e == j ) {	// main element
+				for (var k = 0; k < orb_s[j].length; k++ ) {
+					var o = Number(orb_s[j][k]);
+					orb_base_dmg[i] += ((o==4)?orbdmg(o)*tp(i):orbdmg(o))*isPlus(o);
+				}
+				orb_base_dmg[i] *= (rh_count[j]==0)?1:1+(rh_count[j]*0.1)*re[j];
 			}
-			if ( x == 4 ) { y = tp(j+1); } //two-pronged if orb = 4
-			orb_base_damage[j] += orbdmg(x) * isPlus(i) * y; //calculate base damage from orbs		
+			if ( e_sub == j ) { // sub element
+				var r = 0;
+				for (var k = 0; k < orb_s[j].length; k++ ) {
+					var o = Number(orb_s[j][k]);
+					orb_base_dmg_sub[i] += ((o==4)?orbdmg(o)*tp(i):orbdmg(o))*isPlus(o)*((e_sub==e)?0.1:0.3);
+				}
+				orb_base_dmg_sub[i] *= (rh_count[j]==0)?1:1+(rh_count[j]*0.1)*re[j];
+			}
 		}
-	}
-	combo += orbx[5];
-	comboMul = combo==1?1:(1+(0.25*(combo-1)));
-	var rowMul = 1 + Number(rh()*rowCount/10);
-	
-	var dmg = []; //store damage of each sub
-	for (var j = 0; j < 6; j++) {
-		dmg[j] = Number(orb_base_damage[j] * comboMul * atk(j+1) * rowMul * leadMul());
+
+		// calculate damage of each sub here
+		damage[i] = Math.round(orb_base_dmg[i]*atk(i)*leadMul()*comboMul); // and other multiplier
+		damage_sub[i] = Math.round(orb_base_dmg_sub[i]*atk(i)*leadMul()*comboMul); 
 	}
 	
+	//orb input 2
+	for (var i = 1; i <= 6; i ++) { // i = sub
+		var e = monster_s[i]['e1'];
+		var e_sub = monster_s[i]['e2'];
+		for (var j = 0; j <= 4; j++ ) { // j = element
+			if ( e == j ) {	// main element
+				for (var k = 0; k < orb_sc[j].length; k++ ) {
+					var o = Number(orb_sc[j][k]);
+					orb_base_dmgc[i] += ((o==4)?orbdmg(o)*tp(i):orbdmg(o))*isPlus(o);
+				}
+				orb_base_dmgc[i] *= (rh_countc[j]==0)?1:1+(rh_countc[j]*0.1)*re[j];
+			}
+			if ( e_sub == j ) { // sub element
+				var r = 0;
+				for (var k = 0; k < orb_sc[j].length; k++ ) {
+					var o = Number(orb_sc[j][k]);
+					orb_base_dmg_subc[i] += ((o==4)?orbdmg(o)*tp(i):orbdmg(o))*isPlus(o)*((e_sub==e)?0.1:0.3);
+				}
+				orb_base_dmg_subc[i] *= (rh_countc[j]==0)?1:1+(rh_countc[j]*0.1)*re[j];
+			}
+		}
+
+		// calculate damage of each sub here
+		damagec[i] = Math.round(orb_base_dmgc[i]*atk(i)*leadMul()*combocMul); // and other multiplier
+		damage_subc[i] = Math.round(orb_base_dmg_subc[i]*atk(i)*leadMul()*combocMul); 
+	}
+				
 	
 	//display damage
-	var totaldmg = 0;
-	
-	//change things for compare
-	if ( arguments[1] == 1 ) { 
-		for (var i = 0; i <= 5; i++) {
-			x = 'damage' + Number(i+1) + '-compare';
-			y = Math.round(dmg[i]);
-			document.getElementById(x).innerHTML = y;
-			document.getElementById(x).removeAttribute('style');
-			if (y > 300000) { document.getElementById(x).style.color = 'blue'; }
-			if (y > 600000) { document.getElementById(x).style.fontWeight = '900'; }
-			totaldmg += y;
+	total_damage = 0;
+	total_damage_sub = 0;
+	total_damagec = 0;
+	total_damage_subc = 0;
+	for (var i = 1; i <= 6; i++) {
+		var x = document.getElementById('damage'+i);
+		var y = document.getElementById('damage'+i+'sub');
+		var xc = document.getElementById('damage'+i+'c');
+		var yc = document.getElementById('damage'+i+'subc');
+		
+		if ( combo != 0 ) {
+			x.innerHTML = damage[i]; formatDamage(x,damage[i]);
+			y.innerHTML = damage_sub[i]; formatDamage(y,damage_sub[i]);
+			total_damage += damage[i]; total_damage += damage_sub[i];
 		}
-		document.getElementById('totaldamage-compare').innerHTML = totaldmg;	
-		document.getElementById('disp-compare').innerHTML = 'Total combo: ' + combo + ' Combo Multiplier: ' + comboMul + ', Row Multiplier: ' + rowMul + ', Leader Multiplier: ' + leadMul();
-		document.getElementById('result_compare').style.display = 'table';
+		if ( comboc != 0 ) {
+			xc.innerHTML = damagec[i]; formatDamage(xc,damagec[i]);
+			yc.innerHTML = damage_subc[i]; formatDamage(yc,damage_subc[i]);
+			total_damagec += damagec[i]; total_damagec += damage_subc[i];				
+		}
 	}
 	
-	//normal things
-	else {
-		for (var i = 0; i <= 5; i++) {
-			x = 'damage' + Number(i+1);
-			y = Math.round(dmg[i]);
-			document.getElementById(x).innerHTML = y;
-			document.getElementById(x).removeAttribute('style');
-			if (y > 300000) { document.getElementById(x).style.color = 'blue'; }
-			if (y > 600000) { document.getElementById(x).style.fontWeight = '900'; }
-			totaldmg += y;
+	if ( combo != 0 ) {
+
+		var lp = '<p>';
+		for (var j = 0; j <= 4; j++) { //j = element
+			var z = 0;
+			for (var i = 1; i <= 6; i++ ) {
+				if (monster_s[i]['e1'] == j) { z += damage[i]; }
+				if (monster_s[i]['e2'] == j) { z += damage_sub[i]; }
+			}
+			lp += '<img src="images/'+j+'.png" width="12" height="12">'+z;
+			lp += (j==4)?'':'+ ';
 		}
-		document.getElementById('totaldamage').innerHTML = totaldmg;	
-		document.getElementById('disp').innerHTML = 'Total combo: ' + combo + ' Combo Multiplier: ' + comboMul + ', Row Multiplier: ' + rowMul + ', Leader Multiplier: ' + leadMul();
-		document.getElementById('result').style.display = 'table';
+		lp += '</p>';
+		document.getElementById('totaldamage').innerHTML = total_damage;
+		document.getElementById('splitdamage').innerHTML = lp;
 	}
+	
+	if ( comboc != 0 ) {
+		var lpc = '<p>';
+		for (var j = 0; j <= 4; j++) { //j = element
+			var z = 0;
+			for (var i = 1; i <= 6; i++ ) {
+				if (monster_s[i]['e1'] == j) { z += damagec[i]; }
+				if (monster_s[i]['e2'] == j) { z += damage_subc[i]; }
+			}
+			lpc += '<img src="images/'+j+'.png" width="12" height="12">'+z;
+			lpc += (j==4)?'':'+ ';
+		}
+		lpc += '</p>';
+		document.getElementById('totaldamagec').innerHTML = total_damagec;
+		document.getElementById('splitdamagec').innerHTML = lpc;
+	}
+
+	
+	
+	
+	//document.getElementById('disp').innerHTML = 'Total combo: ' + combo + ' Combo Multiplier: ' + comboMul + ', Row Multiplier: ' + rowMul + ', Leader Multiplier: ' + leadMul();
+	document.getElementById('result').style.display = 'table';	
+}
+
+function formatDamage(x,val) {
+	x.removeAttribute('style');
+	if (val > 300000) { x.style = 'color:blue'; }
+	if (val > 600000) { x.style = 'color:blue;font-weight:900' }
 }
 
 //get values
+function getMonsterStats() { // sub1:{atk:0,rh:[],tp:0,e1:0,e2:0}
+	for (i = 1; i <= 6 ; i++) {
+		var x = monster_s[i];
+		x.atk = document.getElementById('atk'+i).value;
+		for (j = 0; j <= 4 ; j++) { //01234 
+			x.rh[j] = countAwoken(monster_loc[i],j+22)
+		}
+		x.tp = document.getElementById('tp'+i).value;
+		x.e1 = monsterDB[monster_loc[i]]['element'];
+		x.e2 = monsterDB[monster_loc[i]]['element2'];
+	}
+}
+
+function getOrbInput(val) { // orb_s = {element:[orb1,orb2...],element2:[orb1,orb2...]}
+	for (var j = 0; j <= 4; j++) { // j = element
+		var array = [];
+		for (var i = 1; i <= orb_input_total; i++) {
+			if (val == 0) {
+				var x = document.getElementById('orb'+i).value;
+				var y = document.getElementById('orb'+i+'e'+j).value;
+				var z = orb_s;
+				if (x>=6 && y==1) { rh_count[j]++; }
+			}
+			else if (val == 1) {
+				var x = document.getElementById('orb'+i+'c').value;
+				var y = document.getElementById('orb'+i+'e'+j+'c').value;		
+				var z = orb_sc;
+				if (x>=6 && y==1) { rh_countc[j]++; }
+			}
+			if (x>=3 && y==1) {	array.push(x); }
+			z[j] = array;
+		}
+	}
+}			
+	
+function getCombo() {
+	for (var i = 0; i <= 4 ; i++) {
+		combo += orb_s[i].length;
+		comboc += orb_sc[i].length;
+	}
+	comboMul = (combo>1)?1+(combo-1)*0.25:1;
+	combocMul = (comboc>1)?1+(comboc-1)*0.25:1;
+}
+
+function getRowEnhance () {
+	for (var i = 1; i <= 6; i++ ) {
+		for (var j = 0; j <= 4; j++ ) {
+			re[j] += monster_s[i].rh[j];
+		}
+	}
+}
+
 function atk(mId) { //get attack of monster mId
 	var x = 'atk' + mId;
 	return Number(document.getElementById(x).value);
-}
-
-function rh() { //return total number of row enhance
-	var x, y;
-	var r = 0;
-	for (var i = 0; i <= 5; i++) {
-		x = 'row' + Number(i+1);
-		y = document.getElementById(x);
-		r += Number(y.options[y.selectedIndex].value);
-	}
-	return r;
 }
 
 function tp(mId) { //return two-pronged multiplier
@@ -133,63 +333,29 @@ function leadMul() { //get lead multipliers
 	var x2 = document.getElementById('m_l2');
 	return Number(x1.options[x1.selectedIndex].value * x2.options[x2.selectedIndex].value);
 }
-
-function orb(mId) { //get orb input
-	var x = 'orb' + mId;
-	var y = document.getElementById(x).value;
-	return y>=3?Number(y):0;
-}
-
-function orbc(mId) { //get orb input (compare)
-	var x = 'orb' + mId + 'c';
-	var y = document.getElementById(x).value;
-	return y>=3?Number(y):0;
-}
  
 function orbdmg(val) { //translate orb number to dmg
 	if (val == 0 || val == 'NaN') { return 0; }
 	else { return val == 3 ? 1 : (1+ (val-3)*0.25); }
 }
 
-function isPlus(mId) {
+function isPlus(orb_num) {
 	var x = document.getElementById('isplus').options[document.getElementById('isplus').selectedIndex].value;
-	return x==1?(Number(1+orb(mId)*0.06)):1;
+	return x==1?(Number(1+(orb_num*0.06))):1;
 }
 
 //generate options
-var lm = [1, 1.25, 1.35, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7];
-var om = [1, 1.5, 2, 2.5, 3];
 
-function generateMultiplier(id,array) {
+function selectElem(id) {
 	var x = document.getElementById(id);
-	for (var i = 0; i < array.length; i++) {
-		var y = document.createElement('option');
-		y.value = y.text = array[i];
-		x.add(y);
-	}
-}
-
-function generateOrbInput(id) {
-	var x = document.getElementById(id);
-	var count = 1;
-	for (var i = 1; i <= 5; i++ ) {
-		var y = document.createElement('input');
-		y.setAttribute('type','number');
-		id=='orbinput'?(y.setAttribute('id', 'orb' + i)):(y.setAttribute('id', 'orb' + i + 'c'));
-		y.setAttribute('onblur', 'checkOrbInput(this.value)');
-		y.setAttribute('min','3');
-		y.setAttribute('max','30');
-		y.setAttribute('class','orb-input');
-		if (count == 1) { y.setAttribute('value','3') } ;
-		count=0;
-		x.appendChild(y);
-	}
-}
-
-function checkOrbInput(val) {
-	if ((val > 30 || val < 3) && (val != 0)) {
-		//handle error here 
-	}
+	var pos = id.substr(id.indexOf('b')+1,(id.indexOf('e')-id.indexOf('b')-1));
+	var pos_c = (id.charAt(id.length-1)=='c'?'c':'');//return "" if not compare
+	for (i = 0; i < 5; i++) {
+		document.getElementById('orb'+pos+'e'+i+pos_c).className = 'orb-ns';
+		document.getElementById('orb'+pos+'e'+i+pos_c).value = 0;
+	}	
+	x.className='orb-s';
+	x.value = 1;
 }
 
 //display stuff
@@ -201,10 +367,11 @@ function showCompare(checked) {
 }
 
 function changeStat(id,val) {
-	if (isNaN(val-0)) { console.log('Please enter valid monster id') }
+	if (isNaN(val-0)) { console.log('Please enter valid monster id'); }
 	else {
 		var pos = id.charAt(id.length-1);
 		var loc = getMonsterArrayLocation(Number(val));
+		monster_loc[pos] = loc; 
 		monsterDB[loc]['awoken_skills'].sort();
 		
 		//name
@@ -214,7 +381,9 @@ function changeStat(id,val) {
 		
 		//atk up: 2
 		document.getElementById('ismp'+pos).checked = false;
-		document.getElementById('atk'+pos).value = monsterDB[loc]['atk_max'] + countAwoken(loc,2)*100;
+		var a = monsterDB[loc]['atk_max'] + countAwoken(loc,2)*100;
+		document.getElementById('atk'+pos).value = a;
+		updateSubAtk(pos);
 		
 		//row enhance: 22-26
 		//problem: only getting the highest amount of row enhance #
@@ -229,8 +398,22 @@ function changeStat(id,val) {
 	}
 }
 
+function updateSubAtk(pos) { //update sub attack
+	var a = document.getElementById('atk'+pos).value;
+	var b = monster_loc[pos];
+	var y = monsterDB[b]['element2'];
+	var z = 0;
+	if (y == null) { }
+	else {
+		var x = monsterDB[b]['element'];
+		(x==y)?z=Math.floor(a*0.1):z=Math.floor(a*0.3);
+	}
+	document.getElementById('atk'+pos+'s').value = z;
+}
+
 //add 495 atk for 297 check
 var old_atk = [0,0,0,0,0,0]; //store old atk
+
 function is297(id) {
 	var x = id.charAt(id.length-1);
 	var y = Number(document.getElementById('atk'+x).value);
@@ -242,8 +425,9 @@ function is297(id) {
 	else { 
 		var j = y;
 		document.getElementById('atk'+x).value = old_atk[x];
-		old_atk[x] = j;		
+		old_atk[x] = j;
 	}
+	updateSubAtk(x);
 }
 
 function change_m2(val) {
@@ -260,9 +444,11 @@ function getMonsterArrayLocation(id) {
 	for (var i = 0; i < monsterDB.length; i++) {
 		if ( monsterDB[i]['id'] == id) { return i; }
 	}
+	return 9999;
 }
 
 function countAwoken(arrId,val) {
+	if (arrId == 9999) { return 0; }
 	var x = monsterDB[arrId]['awoken_skills'].lastIndexOf(val);
 	if ( x >= 0 ) {
 		x = x - Number(monsterDB[arrId]['awoken_skills'].indexOf(val))+1;
