@@ -60,7 +60,7 @@ function generateMultiplier(id,array) {
 }
 
 function generateOrbInput() {
-	if ( arguments[0] === undefined ) { var a =1; b = orb_input_total; }
+	if ( arguments[0] === undefined ) { var a = 1; b = orb_input_total; }
 	else { var a = orb_input_total+1; b = orb_input_total+arguments[1]; orb_input_total += arguments[1];}	
 	for (var k = 0; k <= 1; k++ ) {
 		var id = (k==0)?'orbinput':'orbinput_c';
@@ -77,7 +77,7 @@ function generateOrbInput() {
 			for (j=0; j<5; j++) {
 				var y = document.createElement('input');
 				y.type = 'image';
-				y.src = 'images\\'+j+'.png';
+				y.src = 'images/'+j+'.png';
 				y.id = (id=='orbinput')?'orb'+i+'e'+j:'orb'+i+'e'+j+'c';
 				y.value = 0;
 				y.className = 'orb-ns';
@@ -218,7 +218,7 @@ function calculateDamage() {
 	}
 	
 	if ( combo != 0 ) {
-
+		document.getElementById('result').style.display = 'table';
 		var lp = '<p>';
 		for (var j = 0; j <= 4; j++) { //j = element
 			var z = 0;
@@ -232,9 +232,11 @@ function calculateDamage() {
 		lp += '</p>';
 		document.getElementById('totaldamage').innerHTML = total_damage;
 		document.getElementById('splitdamage').innerHTML = lp;
-	}
+		document.getElementById('resultsummary').innerHTML = 'Total combo: '+combo+', Combo Multiplier: '+comboMul;
+	} else { document.getElementById('result').style.display = 'none'; }
 	
 	if ( comboc != 0 ) {
+		document.getElementById('resultc').style.display = 'table';
 		var lpc = '<p>';
 		for (var j = 0; j <= 4; j++) { //j = element
 			var z = 0;
@@ -248,19 +250,16 @@ function calculateDamage() {
 		lpc += '</p>';
 		document.getElementById('totaldamagec').innerHTML = total_damagec;
 		document.getElementById('splitdamagec').innerHTML = lpc;
-	}
+		document.getElementById('resultsummaryc').innerHTML = 'Total combo: '+comboc+', Combo Multiplier: '+combocMul;
+	} else { document.getElementById('resultc').style.display = 'none'; }
 
-	
-	
-	
 	//document.getElementById('disp').innerHTML = 'Total combo: ' + combo + ' Combo Multiplier: ' + comboMul + ', Row Multiplier: ' + rowMul + ', Leader Multiplier: ' + leadMul();
-	document.getElementById('result').style.display = 'table';	
 }
 
 function formatDamage(x,val) {
 	x.removeAttribute('style');
-	if (val > 300000) { x.style = 'color:blue'; }
-	if (val > 600000) { x.style = 'color:blue;font-weight:900' }
+	if (val > 300000) { x.style.color = 'blue'; }
+	if (val > 600000) { x.style.color = 'blue'; x.style.fontWeight = '900'; }
 }
 
 //get values

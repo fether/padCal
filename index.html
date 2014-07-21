@@ -152,7 +152,7 @@
   </tr>
 </table>
 <div style='font-size:9px'>&nbsp;</div>
-<div id="result" style='display:table'>
+<div id="result" style='display:none'>
   <table width='777' border='0' cellpadding='1'>
     <tr class='table-result'>
     <td width='136' class='left-header'>Damage</td>
@@ -174,19 +174,16 @@
   </tr>
 </table>
 <table width="777">
-  <tr class='table-result' style='font-size:20px'>
-    <td width="150" valign='top'>Total Damage</td>
-    <td width="142" valign='top' align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage'></p>
-    <td width="469" valign='top' align='left'><p style='font-size:12px;color:black' id='splitdamage'></p></td>
+  <tr class='table-summary' style='font-size:20px'>
+    <td width="149" >Total Damage</td>
+    <td width="150" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage'></p>
+    <td width="239" align='left'><p style='font-size:12px;color:black' id='splitdamage'>this</p></td>
+    <td width="219" align='right'><p style='font-size:12px;color:black' id="resultsummary">thus</p></td>
   </tr>
 </table>
 </div>
-<div id="result" style='display:table'>
-  <table width="800" border="0" cellpadding="1">
-    <tr>
-      <td align='center'>VS</td>
-    </tr>
-  </table>
+
+<div id="resultc" style='display:none'>	
 <table width='777' border='0' cellpadding='1'>
     <tr class='table-result'>
     <td width='136' class='left-header'>Damage</td>
@@ -208,14 +205,16 @@
   </tr>
 </table>
 <table width="777">
-  <tr class='table-result' style='font-size:20px'>
-    <td width="150" valign='top'>Total Damage</td>
-    <td width="142" valign='top' align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamagec'></p>
-    <td width="469" valign='top' align='left'><p style='font-size:12px;color:black' id='splitdamagec'></p></td>
+  <tr class='table-summary' style='font-size:20px'>
+    <td width="149">Total Damage</td>
+    <td width="150" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamagec'></p>
+    <td width="239" align='left'><p style='font-size:12px;color:black' id='splitdamagec'>this</p></td>
+    <td width="219" align='right'><p style='font-size:12px;color:black' id="resultsummaryc">thus</p></td>
   </tr>
 </table>
 <hr>
 </div>
+
 <table width='200' border='0'>
   <tr>
     <td align='right'>Leader 1 Multiplier</td>
@@ -226,7 +225,7 @@
     <td><select id='m_l2'></select></td>
   </tr>
   <tr>
-    <td align='right'>Other Multiplier</td>
+    <td align='right'>ignore this -&gt;</td>
     <td><select id='m_other'></select></td>
   </tr>
   <tr>
