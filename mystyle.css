@@ -9,6 +9,12 @@ table {
 	font-size:16px;
 }
 
+.table-summary .p {
+	vertical-align:middle;
+	min-height:26px;
+	
+}
+
 .monster-name {
 	text-align:center;
 	font-size:10px;

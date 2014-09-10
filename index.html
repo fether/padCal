@@ -6,7 +6,7 @@
 	height:57px;
 	z-index:1;
 	left: 210px;
-	bottom: 132px;
+	bottom: 110px;
 }
 #apDiv2 {
 	position:relative;
@@ -14,7 +14,7 @@
 	height:57px;
 	z-index:2;
 	left: 420px;
-	bottom: 191px;
+	bottom: 169px;
 }
 #apDiv3 {
 	position:absolute;
@@ -37,13 +37,13 @@
 <!-- table for monster input -->
 <table width='' border='0' cellpadding='1'>
   <tr>
-    <td width='113' height="26" class='left-header'>Monsters #</td>
-    <td class='stats'><input type='text' id='mon1' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp1' onChange='is297(this.id)'><span class='monster-name' id='name1' style='display:none'></span></td>
-    <td class='stats'><input type='text' id='mon2' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp2' onChange='is297(this.id)'><span class='monster-name' id='name2' style='display:none'></span></td>
-    <td class='stats'><input type='text' id='mon3' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp3' onChange='is297(this.id)'><span class='monster-name' id='name3' style='display:none'></span></td>
-    <td class='stats'><input type='text' id='mon4' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp4' onChange='is297(this.id)'><span class='monster-name' id='name4' style='display:none'></span></td>
-    <td class='stats'><input type='text' id='mon5' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp5' onChange='is297(this.id)'><span class='monster-name' id='name5' style='display:none'></span></td>
-    <td class='stats'><input type='text' id='mon6' class='cell-mId' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp6' onChange='is297(this.id)'><span class='monster-name' id='name6' style='display:none'></span></td>
+    <td width='100' height="26" class='left-header' valign='top'>Monsters #</td>
+    <td width="106" class='stats'><input type='text' id='mon1' class='cell-mId' tabindex='1' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp1' onChange='is297(this.id)'><span class='monster-name' id='name1' style='display:none'></span></td>
+    <td width="104" class='stats'><input type='text' id='mon2' class='cell-mId' tabindex='2' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp2' onChange='is297(this.id)'><span class='monster-name' id='name2' style='display:none'></span></td>
+    <td width="104" class='stats'><input type='text' id='mon3' class='cell-mId' tabindex='3' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp3' onChange='is297(this.id)'><span class='monster-name' id='name3' style='display:none'></span></td>
+    <td width="104" class='stats'><input type='text' id='mon4' class='cell-mId' tabindex='4' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp4' onChange='is297(this.id)'><span class='monster-name' id='name4' style='display:none'></span></td>
+    <td width="104" class='stats'><input type='text' id='mon5' class='cell-mId' tabindex='5' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp5' onChange='is297(this.id)'><span class='monster-name' id='name5' style='display:none'></span></td>
+    <td width="104" class='stats'><input type='text' id='mon6' class='cell-mId' tabindex='6' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp6' onChange='is297(this.id)'><span class='monster-name' id='name6' style='display:none'></span></td>
   </tr>
   <tr>
     <td class='left-header'>ATK</td>
@@ -55,103 +55,63 @@
     <td><input id='atk6' class='cell-ATK' type='number' value='0' onChange='updateSubAtk(6)'><input id='atk6s' class='cell-ATKsub' type='text' value='0' disabled></td>
   </tr>
   <tr>
-    <td class='left-header'>ignore this -&gt;</td>
+    <td class='left-header'>&nbsp;</td>
     <td class='table-row'>
-      <select id='row1'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-      </select>
+    <p id='row1'></p>
     </td>
     <td class='table-row'>
-      <select id='row2'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-      </select>
+    <p id='row2'></p>
     </td>
     <td class='table-row'>
-      <select id='row3'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-      </select>
+    <p id='row3'></p>
 	</td>
     <td class='table-row'>
-      <select id='row4'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-      </select>
+    <p id='row4'></p>
     </td>
     <td class='table-row'>
-      <select id='row5'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-      </select>
+    <p id='row5'></p>
     </td>
     <td class='table-row'>
-      <select id='row6'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-        <option value='3'>3</option>
-      </select>
-    </td>
-  </tr>  
-  <tr>
-    <td class='left-header'>Two-pronged</td>
-    <td class='tp-row'>
-      <select id='tp1'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-      </select>
-    </td>
-    <td class='tp-row'>
-      <select id='tp2'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-      </select>
-    </td>
-    <td class='tp-row'>
-      <select id='tp3'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-      </select>
-    </td>
-    <td class='tp-row'>
-      <select id='tp4'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-      </select>
-    </td>
-    <td class='tp-row'>
-      <select id='tp5'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-      </select>
-    </td>
-    <td class='tp-row'>
-      <select id='tp6'>
-        <option value='0'>0</option>
-        <option value='1'>1</option>
-        <option value='2'>2</option>
-      </select>
+    <p id='row6'></p>
     </td>
   </tr>
+  <tr>
+    <td class='left-header'>Enhance:
+      <select name="m_other" id='m_other' onChange="checkEnhance(this.id)">
+    </select></td>
+    <td class='table-row'><span class="stats">
+      <input type='checkbox' id='m_other1'>
+      -
+      <input type='checkbox' id='m_othersub1'>
+    </span></td>
+    <td class='table-row'><span class="stats">
+      <input type='checkbox' id='m_other2'>
+      -
+      <input type='checkbox' id='m_othersub2'>
+    </span></td>
+    <td class='table-row'><span class="stats">
+      <input type='checkbox' id='m_other3'>
+      -
+      <input type='checkbox' id='m_othersub3'>
+    </span></td>
+    <td class='table-row'><span class="stats">
+      <input type='checkbox' id='m_other4'>
+      -
+      <input type='checkbox' id='m_othersub4'>
+    </span></td>
+    <td class='table-row'><span class="stats">
+      <input type='checkbox' id='m_other5'>
+      -
+      <input type='checkbox' id='m_othersub5'>
+    </span></td>
+    <td class='table-row'><span class="stats">
+      <input type='checkbox' id='m_other6'>
+      -
+      <input type='checkbox' id='m_othersub6'>
+    </span></td>
+  </tr>
 </table>
-<div style='font-size:9px'>&nbsp;</div>
+<hr width="777" align="left">
 <div id="result" style='display:none'>
   <table width='777' border='0' cellpadding='1'>
     <tr class='table-result'>
@@ -177,8 +137,8 @@
   <tr class='table-summary' style='font-size:20px'>
     <td width="149" >Total Damage</td>
     <td width="150" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamage'></p>
-    <td width="239" align='left'><p style='font-size:12px;color:black' id='splitdamage'>this</p></td>
-    <td width="219" align='right'><p style='font-size:12px;color:black' id="resultsummary">thus</p></td>
+    <td width="300" align='left'><p style='font-size:12px;color:black' id='splitdamage'>this</p></td>
+    <td width="158" align='right'><p style='font-size:12px;color:black' id="resultsummary">thus</p></td>
   </tr>
 </table>
 </div>
@@ -208,13 +168,13 @@
   <tr class='table-summary' style='font-size:20px'>
     <td width="149">Total Damage</td>
     <td width="150" align='left' style='padding-left:10px'><p style='font-size:20px;color:red' id='totaldamagec'></p>
-    <td width="239" align='left'><p style='font-size:12px;color:black' id='splitdamagec'>this</p></td>
-    <td width="219" align='right'><p style='font-size:12px;color:black' id="resultsummaryc">thus</p></td>
+    <td width="300" align='left'><p style='font-size:12px;color:black' id='splitdamagec'>this</p></td>
+    <td width="158" align='right'><p style='font-size:12px;color:black' id="resultsummaryc">thus</p></td>
   </tr>
 </table>
 <hr>
 </div>
-
+<hr width="777" align="left">
 <table width='200' border='0'>
   <tr>
     <td align='right'>Leader 1 Multiplier</td>
@@ -223,10 +183,6 @@
   <tr>
     <td align='right'>Leader 2 Multiplier</td>
     <td><select id='m_l2'></select></td>
-  </tr>
-  <tr>
-    <td align='right'>ignore this -&gt;</td>
-    <td><select id='m_other'></select></td>
   </tr>
   <tr>
     <td align='right'>+orbs?</td>
@@ -259,6 +215,3 @@
     <td style='fontsize:14px'>Set all to:<span id='setall_c'></span></td>
   </tr>  
 </table></div>
-
-
-<p id='test1'></p>
