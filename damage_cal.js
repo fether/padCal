@@ -522,8 +522,8 @@ function getParmFromURL(str) {
 }
 
 function exportURL() {
-	//var domainName = 'http://fether.github.io/padCal';
-	var domainName = 'file:///D:/Dropbox/pad%20stuff/padCal/index.html';
+	var domainName = 'http://fether.github.io/padCal';
+	//var domainName = 'file:///D:/Dropbox/pad%20stuff/padCal/index.html';
 	var parmm = '';
 	var parma = '';
 	
