@@ -14,7 +14,7 @@
 	height:57px;
 	z-index:2;
 	left: 420px;
-	bottom: 169px;
+	bottom: 167px;
 }
 #apDiv3 {
 	position:absolute;
@@ -38,12 +38,36 @@
 <table width='' border='0' cellpadding='1'>
   <tr>
     <td width='100' height="26" class='left-header' valign='top'>Monsters #</td>
-    <td width="106" class='stats'><input type='text' id='mon1' class='cell-mId' tabindex='1' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp1' onChange='is297(this.id)'><span class='monster-name' id='name1' style='display:none'></span></td>
-    <td width="104" class='stats'><input type='text' id='mon2' class='cell-mId' tabindex='2' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp2' onChange='is297(this.id)'><span class='monster-name' id='name2' style='display:none'></span></td>
-    <td width="104" class='stats'><input type='text' id='mon3' class='cell-mId' tabindex='3' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp3' onChange='is297(this.id)'><span class='monster-name' id='name3' style='display:none'></span></td>
-    <td width="104" class='stats'><input type='text' id='mon4' class='cell-mId' tabindex='4' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp4' onChange='is297(this.id)'><span class='monster-name' id='name4' style='display:none'></span></td>
-    <td width="104" class='stats'><input type='text' id='mon5' class='cell-mId' tabindex='5' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp5' onChange='is297(this.id)'><span class='monster-name' id='name5' style='display:none'></span></td>
-    <td width="104" class='stats'><input type='text' id='mon6' class='cell-mId' tabindex='6' onBlur='changeStat(this.id,this.value)'><input type='checkbox' id='ismp6' onChange='is297(this.id)'><span class='monster-name' id='name6' style='display:none'></span></td>
+    <td width="106" class='stats'>
+    <input type='text' id='mon1' class='cell-mId' tabindex='1' onBlur='changeStat(this.id,this.value)'>
+    <button class='b297' id='b1' onClick='give297(this.id)'>+</button>
+    <span class='monster-name' id='name1' style='display:none'></span></td>
+    
+    <td width="104" class='stats'>
+    <input type='text' id='mon2' class='cell-mId' tabindex='2' onBlur='changeStat(this.id,this.value)'>
+    <button class='b297' id='b2' onClick='give297(this.id)'>+</button>
+    <span class='monster-name' id='name2' style='display:none'></span></td>
+    
+    <td width="104" class='stats'>
+    <input type='text' id='mon3' class='cell-mId' tabindex='3' onBlur='changeStat(this.id,this.value)'>
+    <button class='b297' id='b3' onClick='give297(this.id)'>+</button>
+    <span class='monster-name' id='name3' style='display:none'></span></td>
+    
+    <td width="104" class='stats'>
+    <input type='text' id='mon4' class='cell-mId' tabindex='4' onBlur='changeStat(this.id,this.value)'>
+    <button class='b297' id='b4' onClick='give297(this.id)'>+</button>
+    <span class='monster-name' id='name4' style='display:none'></span></td>
+    
+    <td width="104" class='stats'>
+    <input type='text' id='mon5' class='cell-mId' tabindex='5' onBlur='changeStat(this.id,this.value)'>
+    <button class='b297' id='b5' onClick='give297(this.id)'>+</button>
+    <span class='monster-name' id='name5' style='display:none'></span></td>
+    
+    <td width="104" class='stats'>
+    <input type='text' id='mon6' class='cell-mId' tabindex='6' onBlur='changeStat(this.id,this.value)'>
+    <button class='b297' id='b6' onClick='give297(this.id)'>+</button>
+    <span class='monster-name' id='name6' style='display:none'></span></td>
+ 
   </tr>
   <tr>
     <td class='left-header'>ATK</td>
@@ -195,8 +219,8 @@
 <!-- Orb matched -->
 
 <button onClick="generateOrbInput('orbinput',2)">More</button> 
-<button onClick="clearOrbInput()">Clear</button> <button id='cal' onClick='calculateDamage()'>Calculate</button>
-
+<button onClick="clearOrbInput()">Clear</button> <button id='cal' onClick='calculateDamage()'>Calculate</button><br>
+<button onClick="exportURL()">Get URL</button> <button onClick="getURLFromPADX()">Get PADX URL</button>
 <div id="apDiv1">
   <table width='' border="0">
     <tr>
@@ -215,3 +239,5 @@
     <td style='fontsize:14px'>Set all to:<span id='setall_c'></span></td>
   </tr>  
 </table></div>
+
+<p id='test'></p>

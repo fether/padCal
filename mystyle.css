@@ -5,6 +5,14 @@ body {
 	font-size:16px;
 }
 
+.b297 {
+	border:thin;
+	vertical-align:baseline;
+	text-align:center;
+	height:20;
+	width:20;
+}
+
 table {
 	font-size:16px;
 }
@@ -34,7 +42,7 @@ table {
 .cell-mId {
 	border:1px thin;
 	text-align:center;
-	width:80px;
+	width:60px;
 	//background-color:transparent;
 }
 

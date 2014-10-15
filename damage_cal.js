@@ -13,12 +13,7 @@ function start() {
 	document.getElementById('isReady').style.display = 'none';
 	//console.log(monsterDB);
 	//insert other functions here
-	changeStat('mon1',1422);
-	changeStat('mon2',1217);
-	changeStat('mon3',892);
-	changeStat('mon4',1238);
-	changeStat('mon5',1299);
-	changeStat('mon6',1422);
+	getParmFromURL(window.location.href);
 }
 //-------------------------
 
@@ -401,7 +396,7 @@ function changeStat(id,val) {
 		document.getElementById('name'+pos).style.display = 'block';
 		
 		//atk up: 2
-		document.getElementById('ismp'+pos).checked = false;
+		//document.getElementById('ismp'+pos).checked = false;
 		var a = monsterDB[loc]['atk_max'] + countAwoken(loc,2)*100;
 		document.getElementById('atk'+pos).value = a;
 		updateSubAtk(pos);
@@ -476,6 +471,13 @@ function change_m2(val) {
 	x.selectedIndex = val;
 }
 
+function give297(id) {
+	var x = id.charAt(id.length-1);
+	var y = document.getElementById('atk'+x);
+	var z = Number(y.value); z += 495;	
+	y.value = z; updateSubAtk(x);
+}
+
 //read mosnters database
 function readMonsterDatabase() {
 	return document.getElementById('monsterDB').contentDocument.body.firstChild.innerHTML;
@@ -496,4 +498,88 @@ function countAwoken(arrId,val) {
 	}
 	else { x = 0; }
 	return x;
+}
+
+//export URL
+function getParm(str,parm) { 
+	var regexS = "[(\?|&)]" + parm + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(str);
+	return (results==null)?null:results[1].split('.');
+}
+
+function getParmFromURL(str) {
+	var parmm = (getParm(str,'m')==null)?[1422,1217,892,1238,1299,1422]:getParm(str,'m');
+	var parma = (getParm(str,'a')==null)?null:getParm(str,'a');
+	for (var i = 1; i <= 6; i++) {
+		document.getElementById('mon'+i).value = parmm[i-1];
+		changeStat('mon'+i,parmm[i-1]);
+		if (parma != null) { document.getElementById('atk'+i).value = parma[i-1]; updateSubAtk(i) }
+	}
+	document.getElementById('m_l1').selectedIndex = (getParm('l')==null)?1:getParm('l')[0];
+	document.getElementById('m_l2').selectedIndex = (getParm('l')==null)?1:getParm('l')[1];
+	document.getElementById('isplus').value = (getParm('p')==null)?0:getParm('p')[0];
+}
+
+function exportURL() {
+	//var domainName = 'http://fether.github.io/padCal';
+	var domainName = 'file:///D:/Dropbox/pad%20stuff/padCal/index.html';
+	var parmm = '';
+	var parma = '';
+	
+	for (var i = 1; i <= 6; i++) {
+		parmm += document.getElementById('mon'+i).value;
+		parmm += (i==6)?'':'.';
+		parma += document.getElementById('atk'+i).value;
+		parma += (i==6)?'':'.';
+	}
+	
+	
+	var parml = '';
+	for (var i = 1; i <= 2; i++) {
+		parml += document.getElementById('m_l'+i).selectedIndex;
+		parml += (i==2)?'':'.';
+	}
+	
+	/*
+	var parmp = document.getElementById('isplus').value;
+	
+	var parmo = '';
+	var parmo_length = document.getElementsByClassName('orb-input').length
+	for (var i = 0; i < parmo_length; i++) {
+		parmo += document.getElementsByClassName('orb-input')[i].value;
+		parmo += (i==parmo_length)?'':'.';
+	}
+	var parmoe = '';
+	var parmoe_length = document.getElementsByClassName('orb-s')[i].lengt
+	for (var i = 0; i < parmoe_length; i++) {
+		var k = document.getElementsByClassName('orb-s')[i].id;
+	}
+	*/
+	
+	var url = domainName + '?m=' + parmm + '&a=' + parma + '&l=' + parml; // + '&p=' + parmp + '&o=' + parmo + '&oe=' + parmoe;
+	window.location.href = url;
+}
+
+//import URL
+function getURLFromPADX() {
+	//typical PADX URL:
+	//http://www.puzzledragonx.com/en/simulator.asp?q=1217.99.1.99.99.99.6..694.99.1.0.0.0.3..760.99.1.0.0.0.3..1119.99.1.0.0.0.3..1238.99.1.99.99.99.4..1217.99.1.99.99.99.6
+	var str = prompt('Paste PADX URL here','http://www.puzzledragonx.com/en/simulator.asp?q=1217.99.1.99.99.99.6..694.99.1.0.0.0.3..760.99.1.0.0.0.3..1119.99.1.0.0.0.3..1238.99.1.99.99.99.4..1217.99.1.99.99.99.6');
+	var str2 = getParm(str,'q');
+	
+	//document.getElementById('test').innerHTML = str2;
+	var j = 1;
+	for (var i = 0; i <= str2.length; i++) {
+		if (i%8 == 0) {
+			document.getElementById('mon'+j).value = str2[i]; changeStat('mon'+j,str2[i]);
+		}
+		if (i%8 == 4) {
+			//console.log(j);
+			var y = Number(document.getElementById('atk'+j).value);
+			y += str2[i]*5;
+			document.getElementById('atk'+j).value = y; updateSubAtk(j);
+			j++;
+		}
+	}
 }
